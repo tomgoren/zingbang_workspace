@@ -1,0 +1,14 @@
+[tools]
+python = "3.12"
+
+[tasks.migrate]
+description = "Migrate all Linear issues to Plane"
+run = "pip install -q -r scripts/requirements.txt && python scripts/migrate_linear_to_plane.py"
+
+[tasks.migrate-init]
+description = "Test migration pipeline with a single item per type"
+run = "pip install -q -r scripts/requirements.txt && python scripts/migrate_linear_to_plane.py --init"
+
+[tasks.reconcile-labels]
+description = "Re-apply Linear labels to all migrated Plane work items (idempotent)"
+run = "pip install -q -r scripts/requirements.txt && python scripts/migrate_linear_to_plane.py --reconcile-labels"
