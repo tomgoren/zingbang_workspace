@@ -9,7 +9,7 @@ ZingBang is a developer-first platform for globally available services. We are b
 ## Accounts and access you will need
 
 - GitHub access to `Kismet-Engineering`
-- Linear access to the ZingBang workspace
+- Plane access to the ZingBang workspace
 - 1Password access to the `workstation` vault for shared credentials
 
 ## Workstation setup (baseline)
@@ -119,13 +119,13 @@ flowchart LR
 - If you update infrastructure (foundations), capture new outputs in `zingbang_cluster_ops` so those manifests reference the revised resources.
 - When debugging runtime failures locally, run `zingbang_local_experiments` workflows after ensuring your local cluster-ops state reflects the latest promoted config (e.g., by pulling the merged PR or running `platform-api:image:load`).
 
-## How we work (Linear + GitHub)
+## How we work (Plane + GitHub)
 
-- Linear is the source of truth for task state.
+- Plane is the source of truth for task state.
 - Use consistent labels: one `track:*`, one `type:*`, one `horizon:*`, one `component:*`.
-- Commit messages are short, imperative, and include the Linear ID.
+- Commit messages are short, imperative, and include the Plane issue ID.
 - PRs and issues should link to each other and include validation notes.
-- When closing a Linear ticket, add a comment that links to the PR/commit and summarizes evidence delivered.
+- When closing a Plane ticket, add a comment that links to the PR/commit and summarizes evidence delivered.
 
 ## Versioning and release process
 

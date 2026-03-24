@@ -44,7 +44,7 @@ See `docs/getting-started.md` for the high-level delivery flow and the current o
 
 ### Commit Style
 - Short, imperative subjects ("Add compose scaffold", "Fix image arch mismatch")
-- Reference Linear issue ID in commits and PRs
+- Reference Plane issue ID in commits and PRs
 - Group related changes by concern
 
 ### Pre-Commit Verification
@@ -56,8 +56,8 @@ Run local verification for changes that can be validated in under ~5 minutes.
 - Application code: run the relevant unit tests and lint/typecheck tasks when available.
 - Full federation E2E is not required pre-commit, but changes must be locally sanity checked to avoid CI-only debugging.
 
-### Linear Integration
-- Linear is source of truth for task state
+### Plane Integration
+- Plane is source of truth for task state
 - Prefer projects: `Platform Delivery` or `Go-To-Market`
 - Label conventions (lightweight): one `track:*`, one `type:*`, one `horizon:*`, one `component:*`
 - Update issue with file paths and validation notes after implementation
@@ -81,13 +81,13 @@ Run local verification for changes that can be validated in under ~5 minutes.
 
 ### GitOps Discipline
 - Avoid "monkey patching" shared clusters with ad-hoc `kubectl apply`, `helm install`, or `terraform apply` invocations. Land declarative changes in the owning repo (or the appropriate `mise` automation) and let Flux/CI reconcile them.
-- If a break-glass live edit is unavoidable, record the exact commands in the Linear issue and follow up immediately with a GitOps change that makes the fix repeatable before leaving the cluster in that state.
+- If a break-glass live edit is unavoidable, record the exact commands in the Plane issue and follow up immediately with a GitOps change that makes the fix repeatable before leaving the cluster in that state.
 
-## Active Linear Context
+## Active Plane Context
 
 Current focus areas (update as priorities shift):
-- Federation E2E CI: `KIS-*` in Platform Delivery
-- Substrate foundations: `KIS-101` (AWS), `KIS-102` (GCP), `KIS-103` (federation contract)
+- Federation E2E CI in Platform Delivery
+- Substrate foundations: AWS, GCP, federation contract
 - Platform API features: tracked in Platform Delivery project
 
 ## Environment Setup
@@ -107,7 +107,7 @@ cd zingbang_business  # move into a real repo before running mise or other repo-
 ### Release/Automation Notes
 - Always run `mise run <task>` inside the repo that owns the `.mise.toml` defining `<task>` (e.g., release notes live in `zingbang_business`). `mise` run from the workspace root will report "no tasks defined" because the workspace itself is just an entrypoint.
 - All release artifacts (manifests, changelog entries, release notes) belong in `zingbang_business/docs/releases/`. Do not add or edit release docs from the workspace root.
-- Credentials for release automation (LINEAR API key, AWS/GCP roles, email service tokens) come through environment; do not hardcode secrets in files. See `scripts/` directories in other repos for CLI helpers.
+- Credentials for release automation (Plane API key, AWS/GCP roles, email service tokens) come through environment; do not hardcode secrets in files. See `scripts/` directories in other repos for CLI helpers.
 
 ## Related Documentation
 
