@@ -58,8 +58,12 @@ Run local verification for changes that can be validated in under ~5 minutes.
 
 ### Plane Integration
 - Plane is source of truth for task state
-- Prefer projects: `Platform Delivery` or `Go-To-Market`
-- Label conventions (lightweight): one `track:*`, one `type:*`, one `horizon:*`, one `component:*`
+- Active project model:
+  - `Platform Milestones` for cross-repo milestones and delivery outcomes
+  - `Platform API`, `Foundations`, `Cluster Ops`, `Local Experiments`, and `Site` for repo-aligned execution
+  - `Go-To-Market` for market, customer, and business execution
+  - `Legacy - Platform Delivery` is frozen legacy history; do not create new tickets there
+- Label conventions (lightweight): keep `type:*` and `horizon:*`; add `milestone` only when it improves filtering; avoid `track:*` and `component:*` on new tickets
 - Update issue with file paths and validation notes after implementation
 - Always close tickets with a comment that links to the work (commit/PR) and summarizes evidence delivered
 - Project/ticket updates should use short bullet lists (avoid paragraph walls of text)
@@ -86,9 +90,9 @@ Run local verification for changes that can be validated in under ~5 minutes.
 ## Active Plane Context
 
 Current focus areas (update as priorities shift):
-- Federation E2E CI in Platform Delivery
-- Substrate foundations: AWS, GCP, federation contract
-- Platform API features: tracked in Platform Delivery project
+- Cross-repo delivery outcomes in `Platform Milestones`
+- Substrate foundations and GitOps split between `Foundations` and `Cluster Ops`
+- Platform product/control-plane work in `Platform API`
 
 ## Environment Setup
 

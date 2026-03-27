@@ -23,3 +23,10 @@ opencode
 ## Documentation
 
 See [AGENTS.md](./AGENTS.md) for full context including conventions, workflows, and commands.
+
+## Plane project model
+
+- `Platform Milestones` owns cross-repo milestones and delivery outcomes.
+- `Platform API`, `Foundations`, `Cluster Ops`, `Local Experiments`, and `Site` own repo-aligned execution.
+- `Go-To-Market` owns market/customer/business execution.
+- `Legacy - Platform Delivery` is legacy history only.

@@ -122,7 +122,8 @@ flowchart LR
 ## How we work (Plane + GitHub)
 
 - Plane is the source of truth for task state.
-- Use consistent labels: one `track:*`, one `type:*`, one `horizon:*`, one `component:*`.
+- Use `Platform Milestones` for cross-repo milestones and repo-aligned projects for execution: `Platform API`, `Foundations`, `Cluster Ops`, `Local Experiments`, `Site`, and `Go-To-Market`.
+- Keep labels lightweight: use `type:*` and `horizon:*`; add `milestone` only when it helps planning; avoid `track:*` and `component:*` on new tickets.
 - Commit messages are short, imperative, and include the Plane issue ID.
 - PRs and issues should link to each other and include validation notes.
 - When closing a Plane ticket, add a comment that links to the PR/commit and summarizes evidence delivered.
