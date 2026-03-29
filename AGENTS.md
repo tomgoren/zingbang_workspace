@@ -6,17 +6,31 @@ This is the meta-repo entrypoint for ZingBang development. Launch `opencode` fro
 
 | Repo | Purpose | Key Commands |
 |------|---------|--------------|
-| `zingbang_platform_api` | Platform admin plane API (Go) | `mise run build`, `mise run test`, `mise run db:up`, `mise run migrate:up` |
+| `zingbang_platform_api` | Platform admin plane API, hosted customer/admin dashboards, and dashboard auth/session (Go + Astro) | `mise run build`, `mise run test`, `mise run db:up`, `mise run migrate:up` |
 | `zingbang_local_experiments` | Local federation E2E, kind/Submariner/Yugabyte | `mise run kind:create`, `mise run submariner:deploy`, `mise run ci:e2e:federation` |
 | `zingbang_foundations` | Cloud infra (OpenTofu), AWS/GCP foundations | `mise run tofu:plan:dev`, `mise run tofu:apply:dev` |
 | `zingbang_cluster_ops` | Cluster manifests, GitOps configs | N/A (YAML manifests) |
 | `zingbang_business` | ADRs, briefs, architecture docs | N/A (Markdown) |
-| `zingbang_site` | Product/site implementation | TBD |
+| `zingbang_site` | Marketing/docs site implementation | TBD |
 
 ## Terminology
 
 - `platform admin plane`: Management/API plane at `api.<product>.<tld>` (MVP: `api.zingbang.io`)
 - `customer runtime plane`: Workload/data plane at `apps.<product>.<tld>` (MVP: `apps.zingbang.io`)
+- `customer app`: Hosted customer dashboard at `app.zingbang.io`
+- `admin app`: Hosted internal admin dashboard at `admin.zingbang.io`
+
+## Dashboard Surfaces
+
+The dashboard code lives in `zingbang_platform_api`, not `zingbang_site`.
+
+- Customer dashboard frontend bundle: `../zingbang_platform_api/customer_dashboard_web`
+- Admin dashboard frontend bundle: `../zingbang_platform_api/platform_admin_web`
+- Static asset serving and host-based routing: `../zingbang_platform_api/internal/api/static.go`
+- Customer dashboard auth/session endpoints and cookies: `../zingbang_platform_api/internal/api/auth_tokens.go`
+- Shared API routing for hosted dashboard-backed endpoints: `../zingbang_platform_api/internal/api/server.go`
+
+Use `zingbang_site` for marketing/docs content and public-site UX. Use `zingbang_platform_api` for hosted dashboard work, dashboard auth/session, and customer/admin API behaviors that back those surfaces.
 
 ## Cross-Repo Workflows
 

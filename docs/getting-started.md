@@ -58,7 +58,7 @@ Clone the repos you need for your work. Each repo is autonomous and owns its own
 
 - `zingbang_platform_api`
   - Control plane API and contracts
-  - Onboarding flows, billing and event model, docs
+  - Hosted customer/admin dashboards, onboarding flows, auth/session, billing and event model, docs
 
 - `zingbang_foundations`
   - Cloud infrastructure foundations (OpenTofu)
@@ -74,6 +74,7 @@ Clone the repos you need for your work. Each repo is autonomous and owns its own
 
 - `zingbang_site`
   - Public-facing product site and docs presentation
+  - Marketing/docs shell only; not the hosted customer or admin dashboards
 
 - `zingbang_business`
   - Strategy, planning artifacts, ADRs, and roadmap context
@@ -91,6 +92,26 @@ Flow at a glance:
 2. Foundations and cluster-ops establish the runtime substrate in AWS/GCP.
 3. Local experiments validate federation behaviors and operational evidence.
 4. Site and docs communicate the system clearly to users.
+
+## Dashboard surfaces and code ownership
+
+ZingBang also exposes two hosted dashboard surfaces in addition to the public site and API:
+
+- `app.zingbang.io` - customer-facing hosted dashboard
+- `admin.zingbang.io` - internal operator/admin dashboard
+
+Those dashboards are implemented inside `zingbang_platform_api`, not `zingbang_site`.
+
+- Customer dashboard frontend bundle: `../zingbang_platform_api/customer_dashboard_web`
+- Admin dashboard frontend bundle: `../zingbang_platform_api/platform_admin_web`
+- Static serving and host-based routing: `../zingbang_platform_api/internal/api/static.go`
+- Hosted auth/session handlers: `../zingbang_platform_api/internal/api/auth_tokens.go`
+- Dashboard-backed API routes: `../zingbang_platform_api/internal/api/server.go`
+
+That means:
+
+- use `zingbang_site` for marketing pages, docs IA, onboarding/help content, and public-site presentation
+- use `zingbang_platform_api` for customer dashboard UI, admin dashboard UI, dashboard auth/session, and customer-safe read APIs that power those dashboards
 
 ## Delivery pipeline and responsibilities
 
@@ -112,6 +133,7 @@ flowchart LR
 2. **Foundations** targets the cloud provider primitives (AWS/GCP) using OpenTofu and publishes outputs consumed by runtime overlays.
 3. **Cluster Ops** stitches together runtime manifests and mirror repositories (Flux). It consumes artifacts from platform-api/foundations and deploys them to the managed clusters.
 4. **Local Experiments** pull the same images/manifests that cluster-ops deploys and run federation E2E locally (kind + Colima) to provide fast developer feedback.
+5. **Site** owns the marketing/docs experience at `zingbang.io`, while the platform API service owns the hosted dashboard surfaces at `app.zingbang.io` and `admin.zingbang.io`.
 
 ### Development checklist
 
