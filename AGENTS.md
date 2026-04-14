@@ -6,7 +6,7 @@ This is the meta-repo entrypoint for ZingBang development. Launch `opencode` fro
 
 | Repo | Purpose | Key Commands |
 |------|---------|--------------|
-| `zingbang_platform_api` | Platform admin plane API, hosted customer/admin dashboards, and dashboard auth/session (Go + Astro) | `mise run build`, `mise run test`, `mise run db:up`, `mise run migrate:up` |
+| `zingbang_platform_api` | Platform admin plane API, hosted customer/admin dashboards, and dashboard auth/session (Go + Astro) | `mise run build`, `mise run test`, `mise run db:up`, `mise run migrate:up`, `mise run dashboard:fixtures`, `mise run dashboard:storybook`, `mise run dashboard:e2e` |
 | `zingbang_local_experiments` | Local federation E2E, kind/Submariner/Yugabyte | `mise run kind:create`, `mise run submariner:deploy`, `mise run ci:e2e:federation` |
 | `zingbang_foundations` | Cloud infra (OpenTofu), AWS/GCP foundations | `mise run tofu:plan:dev`, `mise run tofu:apply:dev` |
 | `zingbang_cluster_ops` | Cluster manifests, GitOps configs | N/A (YAML manifests) |
@@ -31,6 +31,15 @@ The dashboard code lives in `zingbang_platform_api`, not `zingbang_site`.
 - Shared API routing for hosted dashboard-backed endpoints: `../zingbang_platform_api/internal/api/server.go`
 
 Use `zingbang_site` for marketing/docs content and public-site UX. Use `zingbang_platform_api` for hosted dashboard work, dashboard auth/session, and customer/admin API behaviors that back those surfaces.
+
+### Frontend UX Workflow
+
+- For admin dashboard UX work, prefer the deterministic frontend tooling in `../zingbang_platform_api` before jumping straight into live API mode.
+- Use `mise run dashboard:fixtures` for routed fixture-state review at `http://127.0.0.1:4321/fixtures`.
+- Use `mise run dashboard:storybook` for isolated admin state inspection backed by the same fixture scenarios.
+- Use `mise run dashboard:e2e` for browser-driven operator flow validation.
+- Use `mise run dashboard:visual:update` only when a visual regression baseline change is intentional and reviewed.
+- For non-trivial frontend changes, inspect the relevant fixture state first, then validate behavior with Playwright.
 
 ## Cross-Repo Workflows
 
@@ -68,6 +77,7 @@ Run local verification for changes that can be validated in under ~5 minutes.
 - Infra/manifests: validate + smoke test locally (example: Yugabyte changes require `mise run yb:k8s-up` and `mise run yb:k8s-smoke`).
 - Scripts: run the script locally and shellcheck when possible.
 - Application code: run the relevant unit tests and lint/typecheck tasks when available.
+- Frontend UX work: run the relevant dashboard checks (`dashboard:check`, `dashboard:e2e`, and fixture/storybook review as appropriate).
 - Full federation E2E is not required pre-commit, but changes must be locally sanity checked to avoid CI-only debugging.
 
 ### Plane Integration
