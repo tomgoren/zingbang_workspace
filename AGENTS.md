@@ -107,6 +107,31 @@ Run local verification for changes that can be validated in under ~5 minutes.
 - Avoid "monkey patching" shared clusters with ad-hoc `kubectl apply`, `helm install`, or `terraform apply` invocations. Land declarative changes in the owning repo (or the appropriate `mise` automation) and let Flux/CI reconcile them.
 - If a break-glass live edit is unavoidable, record the exact commands in the Plane issue and follow up immediately with a GitOps change that makes the fix repeatable before leaving the cluster in that state.
 
+## Agent Operating Conventions
+
+These rules govern how AI agents (Claude Code and any spawned sub-agents) should operate in this workspace. They take precedence over default assistant behaviors.
+
+### Iteration Cadence
+- Prefer short, tight iteration cycles. Complete one well-scoped thing fully before moving to the next.
+- Each commit must be atomic: one logical change, tests passing, ticket updated. Never batch unrelated changes into a single commit.
+- After each commit, update the Plane ticket with file paths changed and the verification steps taken.
+
+### Decision Points and Ambiguity
+- At any fork in the road — approach choices, scope questions, tradeoffs — stop and ask the operator before proceeding. Do not resolve ambiguity silently.
+- When you encounter an unknown (unfamiliar system state, unexpected output, missing context), pause and surface it rather than working around it.
+- If a task would require a destructive or hard-to-reverse action not explicitly authorized in the current session, ask first.
+
+### Live Systems: Read-Only by Default
+- Do not make changes to live clusters, databases, or shared infrastructure unless the operator explicitly grants permission for the specific action in the current session.
+- For cluster inspection, use `mise -C /Users/tomgoren/dev/zingbang/zingbang_foundations run kubectl:gcp -- <args>` (GCP) or the AWS equivalent. Never invoke `kubectl` directly.
+- No monkey-patching: all cluster state changes must go through GitOps (`zingbang_cluster_ops`) or a `mise` automation task. Do not `kubectl apply`, `helm install`, or `terraform apply` ad-hoc.
+- Migrations apply exclusively via the platform-api init container at pod startup — never via manual port-forward runs.
+- If a break-glass edit is truly unavoidable, record the exact commands in the Plane issue and follow up with a GitOps change before ending the session.
+
+### Ticket Hygiene
+- Update ticket state in Plane when work begins (→ In Progress) and when it completes (→ Done). Reference the Plane ticket ID in every commit subject line.
+- Close tickets with a bullet-list comment: commit SHA, files changed, test output, remaining caveats.
+
 ## Active Plane Context
 
 Current focus areas (update as priorities shift):
