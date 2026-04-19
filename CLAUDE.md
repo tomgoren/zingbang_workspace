@@ -68,6 +68,16 @@ Run local verification for changes that can be validated in under ~5 minutes.
 - Always close tickets with a comment that links to the work (commit/PR) and summarizes evidence delivered
 - Project/ticket updates should use short bullet lists (avoid paragraph walls of text)
 
+### Plane MCP Limitations
+- Current local `plane-mcp-server 0.2.8` behavior against the self-hosted Plane instance is partially broken for work-item discovery paths.
+- Avoid `list_work_items` with filters such as `assignee_ids`, `state_groups`, `priorities`, or `is_archived`; this routes through advanced search and can fail with `403`.
+- Avoid using `expand` on work-item list/retrieve calls; expanded `project`, `state`, `labels`, and `assignees` payloads can fail SDK validation.
+- Preferred safe MCP calls: `get_me`, `list_projects`, `list_states`, `list_labels`, `retrieve_work_item`, and `retrieve_work_item_by_identifier` without `expand`.
+- Preferred workaround for known tickets: use `retrieve_work_item_by_identifier` without `expand`.
+- Preferred workaround for discovery/listing: use the Plane REST API directly with `PLANE_API_KEY`, `PLANE_WORKSPACE_SLUG`, and `PLANE_BASE_URL` rather than the MCP list/search tools.
+- Workspace helper for REST fallback: `scripts/plane_rest.sh`.
+- Do not assume a `plane_list_work_items` failure means the ticket does not exist; verify with direct REST if discovery matters.
+
 ### Claude Code / AI Agent Conventions
 
 - Use `git -C /absolute/path/to/repo` instead of `cd /path && git ...` in Bash tool calls and agent prompts. The `cd && git` compound form triggers a hardcoded bare-repository attack warning that cannot be suppressed via permission rules, even with `Bash(cd:*)` in the allow list.
